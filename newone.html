@@ -1,0 +1,418 @@
+<title>Your Space | Welcome</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+<!-- CSS File -->
+<link rel="stylesheet" href="style.css">
+<main class="scene" id="scene" data-theme="amber">
+
+    <!-- Floating Dust Particles -->
+    <canvas id="dust"></canvas>
+
+    <!-- Background Lighting -->
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <div class="floor-shadow"></div>
+
+
+    <!-- DESK LAMP SECTION -->
+    <section class="lamp-area">
+
+        <div class="lamp-halo"></div>
+
+        <!-- SVG Lamp Illustration -->
+        <svg class="lamp" viewBox="0 0 360 470">
+
+            <defs>
+
+                <!-- Metal Gradient -->
+                <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#75808a"/>
+                    <stop offset=".42" stop-color="#202831"/>
+                    <stop offset=".72" stop-color="#59616a"/>
+                    <stop offset="1" stop-color="#10151b"/>
+                </linearGradient>
+
+                <!-- Brass Gradient -->
+                <linearGradient id="brass" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#fff0a2"/>
+                    <stop offset=".45" stop-color="#c68b2e"/>
+                    <stop offset="1" stop-color="#704816"/>
+                </linearGradient>
+
+                <!-- Lamp Shade -->
+                <linearGradient id="shade" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0" stop-color="#3c4652"/>
+                    <stop offset=".6" stop-color="#111820"/>
+                    <stop offset="1" stop-color="#080d13"/>
+                </linearGradient>
+
+                <!-- Bulb Glow -->
+                <radialGradient id="bulbGlow">
+                    <stop stop-color="#fff8c6" stop-opacity=".95"/>
+                    <stop offset="1" stop-color="#ffbd4a" stop-opacity="0"/>
+                </radialGradient>
+
+                <filter id="softGlow">
+                    <feGaussianBlur stdDeviation="12"/>
+                </filter>
+
+            </defs>
+
+
+            <!-- Lamp Shadow -->
+            <ellipse cx="180" cy="430" rx="100" ry="22" fill="#000" opacity=".55"/>
+
+            <!-- Lamp Base -->
+            <ellipse cx="180" cy="417" rx="82" ry="16" fill="#111821" stroke="#69717a" stroke-width="4"/>
+            <ellipse cx="180" cy="413" rx="68" ry="9" fill="#28313b"/>
+
+            <!-- Lamp Arm -->
+            <path d="M180 411 L143 218 L198 90"
+                fill="none"
+                stroke="#080c11"
+                stroke-width="17"
+                stroke-linecap="round"/>
+
+            <path d="M180 411 L143 218 L198 90"
+                fill="none"
+                stroke="url(#metal)"
+                stroke-width="11"
+                stroke-linecap="round"/>
+
+            <!-- Brass Joints -->
+            <circle cx="180" cy="411" r="13" fill="url(#brass)" stroke="#38280f" stroke-width="3"/>
+            <circle cx="143" cy="218" r="13" fill="url(#brass)" stroke="#38280f" stroke-width="3"/>
+            <circle cx="198" cy="90" r="12" fill="url(#brass)" stroke="#38280f" stroke-width="3"/>
+
+            <!-- Lamp Shade -->
+            <path d="M137 96 C139 28 208 8 253 47 C271 64 277 105 280 145 L150 130 Z"
+                fill="url(#shade)"
+                stroke="#080d13"
+                stroke-width="4"/>
+
+            <!-- Shade Interior -->
+            <path d="M151 129 Q214 107 280 145 Q268 177 213 183 Q164 172 151 129Z"
+                fill="url(#brass)"
+                stroke="#6d4a1c"
+                stroke-width="3"/>
+
+            <!-- Bulb -->
+            <ellipse cx="216" cy="154" rx="34" ry="17"
+                fill="#fff2b5"
+                opacity=".9"
+                filter="url(#softGlow)"/>
+                <circle cx="216" cy="154" r="9" fill="#fff4c6"/>
+
+            <circle cx="216" cy="154" r="56"
+                fill="url(#bulbGlow)"
+                opacity=".8"/>
+
+            <!-- Pull Cord -->
+            <g class="pull-cord" id="pullCord">
+
+                <path d="M216 161 Q214 205 216 253"
+                    stroke="#d6a447"
+                    stroke-width="3"
+                    fill="none"/>
+
+                <path d="M216 161 Q214 205 216 253"
+                    stroke="#ffe5a0"
+                    stroke-width="1"
+                    fill="none"
+                    opacity=".7"/>
+
+                <ellipse cx="216" cy="266" rx="14" ry="20"
+                    fill="url(#brass)"
+                    stroke="#694717"
+                    stroke-width="2"/>
+
+                <ellipse cx="211" cy="259" rx="4" ry="7"
+                    fill="#ffe5a0"
+                    opacity=".65"/>
+
+            </g>
+
+        </svg>
+
+
+        <!-- Interactive Pull Cord Area -->
+        <button class="pull-hit" id="pullHit" aria-label="Pull the lamp cord">
+
+            <span class="pull-tip">
+                Pull to turn on
+            </span>
+
+        </button>
+
+        <p class="lamp-caption" id="lampCaption">
+            A little light changes everything.
+        </p>
+
+    </section>
+
+
+
+    <!-- LOGIN CARD -->
+    <section class="login-card" id="loginCard">
+
+        <!-- Card Header -->
+        <div class="card-topline">
+
+            <span class="eyebrow">
+                YOUR SPACE
+            </span>
+
+            <button class="sound-toggle"
+                id="soundToggle"
+                aria-label="Toggle sound">
+                ♪
+            </button>
+        </div>
+        <!-- Welcome Text -->
+        <h1 id="formTitle">
+            Welcome
+        </h1>
+        <p class="subtitle" id="formSubtitle">
+            Sign in to continue to your account
+        </p>
+
+        <!-- SIGN IN / SIGN UP TABS -->
+        <div class="tabs" role="tablist">
+
+            <button class="tab active"
+                id="signInTab"
+                role="tab"
+                aria-selected="true">
+
+                Sign In
+
+            </button>
+
+            <button class="tab"
+                id="signUpTab"
+                role="tab"
+                aria-selected="false">
+
+                Sign Up
+
+            </button>
+
+            <span class="tab-indicator"></span>
+
+        </div>
+
+
+
+        <!-- AUTHENTICATION FORM -->
+        <form id="authForm">
+
+            <!-- Username / Email -->
+            <label class="field-label" for="email">
+                Username or Email
+            </label>
+
+            <div class="input-wrap">
+
+                <span class="field-icon">♙</span>
+
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Enter username or email"
+                    autocomplete="username"
+                    required>
+
+            </div>
+
+
+
+            <!-- Password Heading -->
+            <div class="password-heading">
+
+                <label class="field-label" for="password">
+                    Password
+                </label>
+
+                <button class="forgot" id="forgotBtn" type="button">
+                    Forgot?
+                </button>
+
+            </div>
+
+
+            <!-- Password Input -->
+            <div class="input-wrap">
+
+                <span class="field-icon">♙</span>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    minlength="6"
+                    required>
+
+                <button
+                    class="show-password"
+                    id="showPassword"
+                    type="button"
+                    aria-label="Show password">
+
+                    ◉
+
+                </button>
+
+            </div>
+
+
+
+            <!-- Remember Me -->
+            <label class="remember">
+              <input type="checkbox" id="remember" checked>
+
+                <span class="custom-check"></span>
+
+                Remember me
+
+            </label>
+
+
+
+            <!-- Submit Button -->
+            <button class="submit-btn" id="submitBtn" type="submit">
+
+                <span>Sign In</span>
+
+                <b>→</b>
+
+            </button>
+
+
+            <!-- Form Messages -->
+            <p class="form-message" id="formMessage" aria-live="polite"></p>
+
+        </form>
+
+
+
+        <!-- SOCIAL LOGIN -->
+        <div class="or">
+
+            <span></span>
+
+            OR CONTINUE WITH
+
+            <span></span>
+
+        </div>
+
+
+        <div class="socials">
+
+            <button
+                type="button"
+                class="social"
+                data-provider="Google"
+                aria-label="Continue with Google">
+
+                <b class="google-g">G</b>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="social"
+                data-provider="GitHub"
+                aria-label="Continue with GitHub">
+
+                ◉
+
+            </button>
+
+
+            <button
+                type="button"
+                class="social"
+                data-provider="Apple"
+                aria-label="Continue with Apple">
+
+                ●
+
+            </button>
+
+        </div>
+
+
+
+        <!-- SUCCESS OVERLAY -->
+        <div class="success-overlay" id="successOverlay">
+
+            <div class="success-mark">
+                ✓
+            </div>
+
+            <h2>
+                You're all set.
+            </h2>
+
+            <p id="successText">
+                Welcome back to your space.
+            </p>
+
+            <button type="button" id="tryAgain">
+                Test Again
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- LAMP COLOUR SELECTOR -->
+    <div class="theme-picker">
+
+        <span>LIGHT</span>
+
+        <button class="swatch selected"
+            data-theme="amber"
+            aria-label="Amber light">
+        </button>
+
+        <button class="swatch"
+            data-theme="cyan"
+            aria-label="Cyan light">
+        </button>
+
+        <button class="swatch"
+            data-theme="rose"
+            aria-label="Rose light">
+        </button>
+
+        <button class="swatch"
+            data-theme="mint"
+            aria-label="Mint light">
+        </button>
+
+        <button class="swatch"
+            data-theme="moonlight"
+            aria-label="Moonlight">
+        </button>
+
+    </div>
+
+</main>
+
+
+<!-- JAVASCRIPT FILE -->
+<script src="script.js"></script>

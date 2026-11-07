@@ -1,0 +1,926 @@
+/* =========================================
+GLOBAL SETTINGS
+========================================= */
+* {
+box-sizing: border-box;
+}
+:root {
+font-family: "DM Sans", sans-serif;
+color: #f6f1e8;
+font-synthesis: none;
+}
+body {
+margin: 0;
+min-height: 100vh;
+background: #f1f0ed;
+display: grid;
+place-items: center;
+
+padding: 28px;
+}
+button,
+input {
+font: inherit;
+}
+button {
+cursor: pointer;
+}
+/* =========================================
+2. MAIN WEBSITE BACKGROUND
+========================================= */
+.scene {
+--glow: #ffb43e;
+--glow-rgb: 255, 180, 62;
+position: relative;
+
+width: min(1180px, 100%);
+min-height: 610px;
+
+overflow: hidden;
+
+border-radius: 28px;
+
+background:
+    radial-gradient(
+        ellipse at 34% 35%,
+        rgba(var(--glow-rgb), .24),
+        transparent 38%
+    ),
+    linear-gradient(
+        112deg,
+        #3c3b29 0%,
+        #25291f 48%,
+        #171d1a 100%
+    );
+
+box-shadow: 0 22px 70px #14170f30;
+
+isolation: isolate;
+
+transition: background 1s;
+}
+/* Dark Vignette */
+.scene::before {
+content: "";
+position: absolute;
+inset: 0;
+
+background:
+    radial-gradient(
+        ellipse at 50% 50%,
+        transparent 35%,
+        rgba(0, 0, 0, .42) 100%
+    );
+
+pointer-events: none;
+
+z-index: -1;
+}
+/* =========================================
+3. FLOATING PARTICLE CANVAS
+========================================= */
+#dust {
+position: absolute;
+inset: 0;
+
+width: 100%;
+height: 100%;
+
+z-index: 0;
+
+pointer-events: none;
+}
+/* =========================================
+4. AMBIENT LIGHTING EFFECTS
+========================================= */
+.ambient {
+position: absolute;
+border-radius: 50%;
+
+filter: blur(65px);
+
+pointer-events: none;
+
+opacity: .35;
+}
+/* Main Golden Ambient Light */
+.ambient-one {
+width: 360px;
+height: 360px;
+left: 15%;
+top: 10%;
+
+background: var(--glow);
+
+opacity: .13;
+}
+/* Secondary Background Light */
+.ambient-two {
+width: 240px;
+height: 240px;
+right: 8%;
+bottom: 5%;
+
+background: #b1a66b;
+
+opacity: .08;
+}
+/* Floor Shadow */
+.floor-shadow {
+position: absolute;
+left: 16%;
+bottom: 16%;
+
+width: 310px;
+height: 30px;
+
+border-radius: 50%;
+
+background: #0008;
+
+filter: blur(15px);
+}
+/* =========================================
+5. DESK LAMP SECTION
+========================================= */
+.lamp-area {
+position: absolute;
+left: 15%;
+top: 15%;
+
+width: 340px;
+height: 450px;
+
+z-index: 2;
+}
+/* Lamp Illustration */
+.lamp {
+width: 100%;
+height: 100%;
+overflow: visible;
+
+filter: drop-shadow(0 18px 15px #0008);
+}
+/* Lamp Light Halo */
+.lamp-halo {
+position: absolute;
+inset: 5% -15% 10%;
+
+background:
+    radial-gradient(
+        ellipse,
+        var(--glow) 0%,
+        transparent 62%
+    );
+
+filter: blur(45px);
+
+opacity: 0;
+
+transition: opacity .8s;
+}
+/* Show Halo When Lamp Is On */
+.scene.lit .lamp-halo {
+opacity: .25;
+}
+/* =========================================
+6. LAMP PULL CORD
+========================================= */
+.pull-cord {
+transform-origin: 216px 161px;
+transition: transform .2s;
+}
+/* Pull Animation */
+.pull-cord.pulling {
+transform: translateY(34px);
+}
+/* Invisible Interactive Pull Area */
+.pull-hit {
+position: absolute;
+left: 58%;
+top: 42%;
+
+width: 55px;
+height: 155px;
+
+transform: translateX(-50%);
+
+border: 0;
+
+background: transparent;
+
+cursor: grab;
+
+touch-action: none;
+}
+.pull-hit:active {
+cursor: grabbing;
+}
+/* Pull Cord Tooltip */
+.pull-tip {
+position: absolute;
+left: 24px;
+top: 45px;
+
+width: 115px;
+
+padding: 8px 10px;
+
+border: 1px solid #ffffff30;
+
+border-radius: 7px;
+
+background: #101713c9;
+
+color: #f8d18d;
+
+font-size: 11px;
+
+opacity: 0;
+
+transform: translateX(8px);
+
+transition: .25s;
+
+pointer-events: none;
+}
+/* Display Tooltip On Hover */
+.pull-hit:hover .pull-tip,
+.pull-hit:focus-visible .pull-tip {
+opacity: 1;
+transform: translateX(0);
+}
+/* Lamp Caption */
+.lamp-caption {
+margin: 0 0 0 45px;
+color: #ffffff80;
+
+font-size: 11px;
+
+letter-spacing: .04em;
+}
+/* =========================================
+7. LOGIN CARD
+========================================= */
+.login-card {
+position: absolute;
+z-index: 3;
+
+left: 49%;
+top: 50%;
+
+transform:
+    translate(0, -45%)
+    translateY(18px)
+scale(.97);
+
+width: 350px;
+
+padding: 30px 30px 27px;
+
+border: 1px solid #ffffff27;
+
+border-radius: 23px;
+
+background:
+    linear-gradient(
+        145deg,
+        rgba(25, 34, 30, .92),
+        rgba(18, 27, 25, .9)
+    );
+
+box-shadow:
+    0 25px 65px #0005,
+    inset 0 1px #ffffff12;
+
+backdrop-filter: blur(18px);
+
+opacity: 0;
+
+visibility: hidden;
+
+transition:
+    opacity .7s,
+    transform .7s,
+    visibility .7s;
+}
+/* Reveal Login Card When Lamp Is On */
+.scene.lit .login-card {
+opacity: 1;
+visibility: visible;
+
+transform:
+    translate(0, -50%)
+    scale(1);
+}
+/* =========================================
+8. LOGIN CARD HEADER
+========================================= */
+.card-topline {
+display: flex;
+align-items: center;
+
+justify-content: space-between;
+
+margin-bottom: 24px;
+}
+/* YOUR SPACE Text */
+.eyebrow {
+font-size: 10px;
+font-weight: 700;
+
+letter-spacing: .18em;
+
+color: var(--glow);
+}
+/* Sound Button */
+.sound-toggle {
+width: 26px;
+height: 26px;
+border: 0;
+
+background: transparent;
+
+color: var(--glow);
+
+font-size: 18px;
+}
+/* Main Welcome Heading */
+h1 {
+font-family: "Playfair Display", serif;
+font-weight: 500;
+
+font-size: 36px;
+
+line-height: 1;
+
+margin: 0 0 7px;
+
+color: #f7f1e7;
+}
+/* Subtitle */
+.subtitle {
+margin: 0 0 22px;
+color: #a8aca7;
+
+font-size: 11px;
+}
+/* =========================================
+9. SIGN IN / SIGN UP TABS
+========================================= */
+.tabs {
+position: relative;
+display: flex;
+
+gap: 24px;
+
+border-bottom: 1px solid #ffffff20;
+
+margin-bottom: 21px;
+}
+/* Tab Buttons */
+.tab {
+border: 0;
+background: none;
+
+padding: 0 0 11px;
+
+color: #aeb1aa;
+
+font-size: 11px;
+}
+/* Active Tab */
+.tab.active {
+color: #fff;
+font-weight: 700;
+}
+/* Animated Tab Indicator */
+.tab-indicator {
+position: absolute;
+bottom: -1px;
+
+left: 0;
+
+width: 25px;
+
+height: 2px;
+
+background: var(--glow);
+
+transition:
+    transform .3s,
+    width .3s;
+}
+/* =========================================
+10. FORM LABELS AND INPUTS
+========================================= */
+.field-label {
+display: block;
+color: #e0e1da;
+
+font-size: 10px;
+
+font-weight: 600;
+
+margin-bottom: 7px;
+}
+/* Input Container */
+.input-wrap {
+height: 40px;
+display: flex;
+
+align-items: center;
+
+gap: 9px;
+
+padding: 0 11px;
+
+border: 1px solid #ffffff20;
+
+border-radius: 5px;
+
+background: #ffffff06;
+
+transition:
+    border .2s,
+    box-shadow .2s;
+}
+/* Focus Effect */
+.input-wrap:focus-within {
+border-color: var(--glow);
+box-shadow:
+    0 0 0 3px rgba(var(--glow-rgb), .09);
+}
+/* Input Fields */
+.input-wrap input {
+width: 100%;
+min-width: 0;
+
+border: 0;
+
+outline: 0;
+
+background: transparent;
+
+color: #fff;
+
+font-size: 10px;
+}
+/* Placeholder */
+.input-wrap input::placeholder {
+color: #818780;
+}
+/* Input Icons */
+.field-icon {
+font-size: 12px;
+color: #89918b;
+}
+/* Password Heading */
+.password-heading {
+display: flex;
+justify-content: space-between;
+
+align-items: center;
+
+margin-top: 14px;
+}
+/* Show Password Button */
+.show-password {
+border: 0;
+background: transparent;
+
+color: #9da49c;
+
+font-size: 11px;
+
+padding: 3px;
+}
+/* Forgot Password */
+.forgot {
+border: 0;
+background: transparent;
+
+color: var(--glow);
+
+font-size: 10px;
+
+font-weight: 600;
+}
+/* =========================================
+11. REMEMBER ME CHECKBOX
+========================================= */
+.remember {
+display: flex;
+align-items: center;
+
+gap: 8px;
+
+margin: 14px 0 17px;
+
+color: #c0c5bd;
+
+font-size: 10px;
+
+cursor: pointer;
+}
+/* Hide Default Checkbox */
+.remember input {
+position: absolute;
+opacity: 0;
+}
+/* Custom Checkbox */
+.custom-check {
+width: 11px;
+height: 11px;
+border: 1px solid #7e857b;
+
+border-radius: 3px;
+
+display: grid;
+
+place-items: center;
+}
+/* Checked State */
+.remember input:checked + .custom-check {
+background: var(--glow);
+border-color: var(--glow);
+}
+/* Checkbox Tick */
+.remember input:checked + .custom-check::after {
+content: "✓";
+font-size: 9px;
+
+color: #182018;
+
+font-weight: 900;
+}
+/* =========================================
+12. SIGN IN BUTTON
+========================================= */
+.submit-btn {
+width: 100%;
+height: 40px;
+
+display: flex;
+
+align-items: center;
+justify-content: center;
+
+gap: 8px;
+
+border: 0;
+
+border-radius: 5px;
+
+background: var(--glow);
+
+color: #1e211a;
+
+font-weight: 700;
+
+font-size: 11px;
+
+box-shadow:
+    0 5px 20px rgba(var(--glow-rgb), .18);
+
+transition:
+    filter .2s,
+    transform .2s;
+}
+/* Hover Effect */
+.submit-btn:hover {
+filter: brightness(1.1);
+transform: translateY(-1px);
+}
+/* Disabled Button */
+.submit-btn:disabled {
+opacity: .7;
+cursor: wait;
+}
+/* Form Message */
+.form-message {
+min-height: 12px;
+margin: 7px 0 0;
+
+color: #ffcc8c;
+
+font-size: 10px;
+}
+/* =========================================
+13. SOCIAL LOGIN SECTION
+========================================= */
+.or {
+display: flex;
+align-items: center;
+
+gap: 10px;
+
+margin: 5px 0 12px;
+
+color: #929a91;
+
+font-size: 9px;
+
+font-weight: 700;
+
+letter-spacing: .06em;
+
+white-space: nowrap;
+}
+/* Horizontal Lines */
+.or span {
+height: 1px;
+flex: 1;
+
+background: #ffffff18;
+}
+/* Social Buttons Layout */
+.socials {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+
+gap: 7px;
+}
+/* Individual Social Buttons */
+.social {
+height: 34px;
+border: 1px solid #ffffff19;
+
+border-radius: 5px;
+
+background: #ffffff08;
+
+color: #e8ece5;
+
+font-size: 13px;
+
+transition:
+    background .2s,
+    border .2s;
+}
+/* Social Button Hover */
+.social:hover {
+background: #ffffff17;
+border-color: #ffffff40;
+}
+/* Google Icon */
+.google-g {
+font-weight: 700;
+color: #4285f4;
+}
+/* =========================================
+14. LAMP COLOUR SELECTOR
+========================================= */
+.theme-picker {
+position: absolute;
+z-index: 4;
+
+bottom: 22px;
+
+right: 25px;
+
+display: flex;
+
+align-items: center;
+
+gap: 9px;
+
+color: #c3c8bf;
+
+font-size: 9px;
+
+letter-spacing: .12em;
+}
+/* Colour Swatches */
+.swatch {
+width: 13px;
+height: 13px;
+border: 2px solid #ffffff55;
+
+border-radius: 50%;
+
+padding: 0;
+
+background: var(--swatch);
+
+opacity: .7;
+}
+/* Selected Colour */
+.swatch.selected {
+outline: 1px solid #fff;
+outline-offset: 3px;
+
+opacity: 1;
+}
+/* Available Colours */
+.swatch[data-theme="amber"] {
+--swatch: #ffb43e;
+}
+.swatch[data-theme="cyan"] {
+--swatch: #53d9e7;
+}
+.swatch[data-theme="rose"] {
+--swatch: #f28aa8;
+}
+.swatch[data-theme="mint"] {
+--swatch: #7be0b3;
+}
+.swatch[data-theme="moonlight"] {
+--swatch: #b9c8ed;
+}
+/* =========================================
+15. SUCCESS OVERLAY
+========================================= */
+.success-overlay {
+position: absolute;
+inset: 0;
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+padding: 25px;
+
+background: #17221ff2;
+
+border-radius: 22px;
+
+text-align: center;
+
+opacity: 0;
+
+visibility: hidden;
+
+transition: .3s;
+}
+/* Show Success Screen */
+.success-overlay.show {
+opacity: 1;
+visibility: visible;
+}
+/* Success Checkmark */
+.success-mark {
+width: 42px;
+height: 42px;
+display: grid;
+
+place-items: center;
+
+border-radius: 50%;
+
+background: var(--glow);
+
+color: #1b211b;
+
+font-size: 22px;
+}
+/* Success Heading */
+.success-overlay h2 {
+font-family: "Playfair Display", serif;
+font-size: 27px;
+
+font-weight: 500;
+
+margin: 17px 0 5px;
+}
+/* Success Description */
+.success-overlay p {
+font-size: 11px;
+color: #b9c1b8;
+}
+/* Test Again Button */
+.success-overlay button {
+margin-top: 16px;
+padding: 9px 20px;
+
+border: 0;
+
+border-radius: 5px;
+
+background: var(--glow);
+
+color: #1b211b;
+
+font-weight: 700;
+
+font-size: 11px;
+}
+/* =========================================
+16. MOBILE RESPONSIVENESS
+========================================= */
+@media (max-width: 760px) {
+body {
+    padding: 12px;
+}
+
+.scene {
+    min-height: 760px;
+
+    border-radius: 20px;
+}
+
+
+/* Move Lamp To The Top */
+
+.lamp-area {
+    left: 50%;
+
+    top: 2%;
+
+    width: 250px;
+
+    height: 330px;
+
+    transform: translateX(-50%);
+}
+
+
+/* Adjust Lamp Shadow */
+
+.floor-shadow {
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    bottom: 49%;
+}
+
+
+/* Center Login Card */
+
+.login-card {
+    left: 50%;
+
+    top: 48%;
+
+    width: min(350px, calc(100% - 34px));
+
+    transform:
+        translate(-50%, -42%)
+        translateY(18px)
+        scale(.97);
+
+    padding: 25px;
+}
+
+
+/* Login Card Animation */
+
+.scene.lit .login-card {
+transform:
+        translate(-50%, -50%)
+        scale(1);
+}
+
+
+/* Adjust Pull Cord */
+
+.pull-hit {
+    left: 58%;
+
+    top: 40%;
+
+    height: 120px;
+}
+
+
+/* Hide Lamp Caption */
+
+.lamp-caption {
+    display: none;
+}
+
+
+/* Center Colour Selector */
+
+.theme-picker {
+    right: 50%;
+
+    transform: translateX(50%);
+
+    bottom: 17px;
+}
+
+
+/* Adjust Lamp When Lit */
+
+.scene.lit .lamp-area {
+    top: 0%;
+}
+}
+/* =========================================
+17. SMALL MOBILE SCREENS
+========================================= */
+@media (max-width: 380px) {
+.login-card {
+    padding: 21px;
+}
+
+.scene {
+    min-height: 730px;
+}
+}
